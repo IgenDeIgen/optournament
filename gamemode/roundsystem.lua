@@ -1,3 +1,5 @@
+--Ez még nincs ahsználatban
+
 function RoundStart()
     local alive = 0
     for k, v in pairs( player.GetAll() ) do
