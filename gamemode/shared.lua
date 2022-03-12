@@ -6,5 +6,5 @@ GM.Website = "N/A"
 DeriveGamemode( "base" )
 
 function GM:Initialize()
-	-- Do stuff
+	--do stuff
 end

@@ -1,9 +1,22 @@
-function KillCounter()
+local killFeedText = ""
+
+net.Receive("Kill_feed", function()
+    if timer.Exists("killfeed_timer") then timer.Remove("killfeed_timer") end
+    killFeedText = net.ReadString()
+    timer.Create("killfeed_timer", 4, 1, resetKillFeedText)
+end)
+
+function resetKillFeedText()
+    killFeedText = ""
+end
+
+function HUD()
 
     local client = LocalPlayer()
 
     if !client:Alive() then return end
 
+    --  Kill counter
     local width = 200
     local height = 100
 
@@ -13,19 +26,20 @@ function KillCounter()
     --draw.SimpleText(client:GetNWInt("KillTotal"), "ScoreboardDefaultTitle", ScrW()/2, 40, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
     draw.SimpleText(client:Frags(), "ScoreboardDefaultTitle", ScrW()/2, 40, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-end
-
-hook.Add("HUDPaint", "KillCounter", KillCounter)
-
-function Crosshair()
-    local width = 5
-    local height = 5
+    --  Crosshair
+    local width = 2
+    local height = 2
 
     draw.RoundedBox(50, ScrW()/2 - (width+2)/2, ScrH()/2 - (height+2)/2, width+2, height+2, Color(0, 0, 0, 255))
     draw.RoundedBox(50, ScrW()/2 - width/2, ScrH()/2 - height/2, width, height, Color(255, 255, 255, 255))
+
+    -- KillFeed
+    if killFeedText != nil then
+        draw.SimpleText(killFeedText, "ScoreboardDefault", ScrW()/2, ScrH()/2+50, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    end
 end
 
-hook.Add("HUDPaint", "Crosshair", Crosshair)
+hook.Add("HUDPaint", "KillCounter", HUD)
 
 
 /*
