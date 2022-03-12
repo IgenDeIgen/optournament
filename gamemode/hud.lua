@@ -17,6 +17,17 @@ end
 
 hook.Add("HUDPaint", "KillCounter", KillCounter)
 
+function Crosshair()
+    local width = 5
+    local height = 5
+
+    draw.RoundedBox(50, ScrW()/2 - (width+2)/2, ScrH()/2 - (height+2)/2, width+2, height+2, Color(0, 0, 0, 255))
+    draw.RoundedBox(50, ScrW()/2 - width/2, ScrH()/2 - height/2, width, height, Color(255, 255, 255, 255))
+end
+
+hook.Add("HUDPaint", "Crosshair", Crosshair)
+
+
 /*
 function HealthMeter()
     local client = LocalPlayer()
@@ -36,7 +47,7 @@ hook.Add("HUDPaint", "HealthHUD", HealthMeter)
 */
 
 function HideHUD(name)
-    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo"}) do
+    for k, v in pairs({"CHudHealth", "CHudBattery", "CHudAmmo", "CHudSecondaryAmmo", "CHudCrosshair"}) do
         if name == v then return false end
     end
 end
