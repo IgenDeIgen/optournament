@@ -1,0 +1,9 @@
+"optournament"
+{
+    "base"          "base"
+    "title"         "One Punch Tournament"
+    "maps"          "^opt_"
+    "category"      "pvp"
+    "menusystem"    "1"
+    "workshopid"    "2775974930"
+}
