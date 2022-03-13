@@ -6,6 +6,19 @@ net.Receive("Kill_feed", function()
     timer.Create("killfeed_timer", 4, 1, resetKillFeedText)
 end)
 
+local curRound = 0
+local roundStartTime = 0
+local roundDuration = 0
+
+net.Receive("RoundStarted", function()
+    curRound = net.ReadUInt(8)
+    print(curRound)
+    roundStartTime = net.ReadUInt(18)
+    print(roundStartTime)
+    roundDuration = net.ReadUInt(11)
+    print(roundDuration)
+end)
+
 function resetKillFeedText()
     killFeedText = ""
 end
@@ -17,21 +30,42 @@ function HUD()
     if !client:Alive() then return end
 
     --  Kill counter
-    local width = 200
-    local height = 100
+    local KillCounter = {}
+    KillCounter.x = ScrW()/2
+    KillCounter.y = 85
+    KillCounter.width = 100
+    KillCounter.height = 70
 
-    draw.RoundedBox(5, ScrW()/2 - width/2, 0, width, height, Color(30, 30, 30, 0))
+    draw.RoundedBox(5, KillCounter.x - KillCounter.width/2, KillCounter.y, KillCounter.width, KillCounter.height, Color(80, 80, 80, 120))
 
-    draw.SimpleText("Kills:", "ScoreboardDefault", ScrW()/2, 20, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.SimpleText("Kills:", "ScoreboardDefault", KillCounter.x, KillCounter.y + 5, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
     --draw.SimpleText(client:GetNWInt("KillTotal"), "ScoreboardDefaultTitle", ScrW()/2, 40, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-    draw.SimpleText(client:Frags(), "ScoreboardDefaultTitle", ScrW()/2, 40, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.SimpleText(client:Frags(), "ScoreboardDefaultTitle", KillCounter.x, KillCounter.y + 30, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+
+    --  Round Timer
+    local RoundTimer = {}
+    RoundTimer.x = ScrW()/2
+    RoundTimer.y = 5
+    RoundTimer.width = 200
+    RoundTimer.height = 75
+    RoundTimer.text = "No Round"
+    
+    if curRound > 0 then
+        local remainingTime = (math.floor(roundStartTime) + roundDuration) - math.floor(CurTime())
+        RoundTimer.text = tostring(math.floor(remainingTime / 60)) .. ":" .. tostring(remainingTime % 60)
+    end
+
+    draw.RoundedBox(5, RoundTimer.x - RoundTimer.width/2, RoundTimer.y, RoundTimer.width, RoundTimer.height, Color(80, 80, 80, 120))
+    draw.SimpleText(RoundTimer.text, "ScoreboardDefaultTitle", RoundTimer.x, RoundTimer.y + RoundTimer.height/2, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    draw.SimpleText(tostring(curRound), "ScoreboardDefaultTitle", RoundTimer.x, RoundTimer.y + 5, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
     --  Crosshair
-    local width = 2
-    local height = 2
+    local Crosshair = {}
+    Crosshair.width = 2
+    Crosshair.height = 2
 
-    draw.RoundedBox(50, ScrW()/2 - (width+2)/2, ScrH()/2 - (height+2)/2, width+2, height+2, Color(0, 0, 0, 255))
-    draw.RoundedBox(50, ScrW()/2 - width/2, ScrH()/2 - height/2, width, height, Color(255, 255, 255, 255))
+    draw.RoundedBox(50, ScrW()/2 - (Crosshair.width+2)/2, ScrH()/2 - (Crosshair.height+2)/2, Crosshair.width+2, Crosshair.height+2, Color(0, 0, 0, 255))
+    draw.RoundedBox(50, ScrW()/2 - Crosshair.width/2, ScrH()/2 - Crosshair.height/2, Crosshair.width, Crosshair.height, Color(255, 255, 255, 255))
 
     -- KillFeed
     if killFeedText != nil then

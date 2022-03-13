@@ -2,8 +2,8 @@
 AddCSLuaFile()
 
 SWEP.PrintName = "Allah's will"
-SWEP.Author = "By Big Rod, also big thanks to Kilburn, robotboy655, MaxOfS2D & Tenrys, I changed like two lines! And I just blatantly stole it ;)"
-SWEP.Purpose = "Left Click: Make your victim fly forward.  Right Click: Make your victim fly sky f**ing high. You can also bust doors down!"
+SWEP.Author = "totally me lol"
+SWEP.Purpose = ""
 
 SWEP.Slot = 0
 SWEP.SlotPos = 4
@@ -115,7 +115,7 @@ function SWEP:DealDamage()
 	end
 
 	local hit = false
-	local scale = phys_pushscale:GetFloat() * 30000
+	local scale = phys_pushscale:GetFloat() * 25000
 
 	if ( SERVER && IsValid( tr.Entity ) && ( tr.Entity:IsNPC() || tr.Entity:IsPlayer() || tr.Entity:IsNextBot()|| tr.Entity:Health() > 0 ) ) then -- Check for entity type
 		local dmginfo = DamageInfo()

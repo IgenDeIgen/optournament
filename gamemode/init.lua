@@ -27,6 +27,7 @@ local killmessages = {
     "@&˘;°!?%?!"
 }
 
+getmetatable(ROUNDSYS)
 
 local killFeeds = {
     "ATTACKER stomped VICTIM's face into the ground",
