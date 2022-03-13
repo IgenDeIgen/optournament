@@ -12,11 +12,8 @@ local roundDuration = 0
 
 net.Receive("RoundStarted", function()
     curRound = net.ReadUInt(8)
-    print(curRound)
     roundStartTime = net.ReadUInt(18)
-    print(roundStartTime)
     roundDuration = net.ReadUInt(11)
-    print(roundDuration)
 end)
 
 function resetKillFeedText()
