@@ -1,8 +1,8 @@
 ROUNDSYS = {}
 
 ROUNDSYS.roundActive = false
-ROUNDSYS.duration = 30 --  Length of one round in seconds
-ROUNDSYS.waitTime = 10
+ROUNDSYS.duration = 180 --  Length of one round in seconds
+ROUNDSYS.waitTime = 30
 ROUNDSYS.roundBeforeMapChange = 3
 ROUNDSYS.startTime = 0
 ROUNDSYS.curRound = 0

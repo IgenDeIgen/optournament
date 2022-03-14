@@ -67,7 +67,7 @@ function GM:PlayerDeath(victim, inflictor, attacker)
     attacker:SetNWInt("KillCount", attacker:GetNWInt("KillCount") + 1)
     victim:SetNWInt("KillCount", 0)
 
-    if attacker != victim then
+    if attacker != victim && IsValid(attacker) then
         if firstKill then
             firstKill = false
             attacker:Say("First blood!")
