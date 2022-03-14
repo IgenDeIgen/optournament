@@ -1,8 +1,8 @@
 ROUNDSYS = {}
 
 ROUNDSYS.roundActive = false
-ROUNDSYS.duration = 180 --  Length of one round in seconds
-ROUNDSYS.waitTime = 30
+ROUNDSYS.duration = 30 --  Length of one round in seconds
+ROUNDSYS.waitTime = 10
 ROUNDSYS.roundBeforeMapChange = 3
 ROUNDSYS.startTime = 0
 ROUNDSYS.curRound = 0
@@ -18,12 +18,13 @@ function ROUNDSYS.RoundStart()
             ROUNDSYS.curRound = ROUNDSYS.curRound + 1
 
             game.CleanUpMap()
-            hook.Run("OnRoundStarted")
+            hook.Run("OnRoundStart")
 
             ROUNDSYS.startTime = CurTime()
 
             for k, v in ipairs( player.GetAll() ) do
                 v:Spawn()
+                v:SetFrags(0)
                 v:UnLock()
             end
 
@@ -52,6 +53,8 @@ function ROUNDSYS.RoundEnd()
         v:KillSilent()
     end
     net.Start("RoundEnded")
+        net.WriteString(winner:Nick())
+        net.WriteUInt(winner:Frags(), 8)
     net.Broadcast()
 
     timer.Simple(ROUNDSYS.waitTime, ROUNDSYS.RoundStart)
@@ -61,11 +64,11 @@ function ROUNDSYS.RoundCheck()
     if ROUNDSYS.roundActive then
         if CurTime() >= ROUNDSYS.startTime + ROUNDSYS.duration then
             ROUNDSYS.roundActive = false
-            hook.Run("OnRoundEnded")
+            hook.Run("OnRoundEnd")
         end
     end
 end
 
-hook.Add("OnRoundEnded", "End round, prepare next", ROUNDSYS.RoundEnd)
+hook.Add("OnRoundEnd", "End round, prepare next", ROUNDSYS.RoundEnd)
 hook.Add("Think", "Check for round end conditions", ROUNDSYS.RoundCheck)
 hook.Add("PlayerInitialSpawn", "Try to start the round if conditions are met", ROUNDSYS.RoundStart)

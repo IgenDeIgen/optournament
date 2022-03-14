@@ -4,6 +4,7 @@ AddCSLuaFile( "shared.lua" )
 AddCSLuaFile( "hud.lua" )
 AddCSLuaFile( "roundsystem.lua" )
 AddCSLuaFile( "spawnprotection.lua" )
+--AddCSLuaFile( "scoreboard.lua" )
 
 include( "shared.lua" )
 include( "roundsystem.lua" )

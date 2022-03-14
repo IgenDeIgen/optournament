@@ -6,14 +6,26 @@ net.Receive("Kill_feed", function()
     timer.Create("killfeed_timer", 4, 1, resetKillFeedText)
 end)
 
+local inRound = true
+
 local curRound = 0
 local roundStartTime = 0
 local roundDuration = 0
 
 net.Receive("RoundStarted", function()
+    inRound = true
     curRound = net.ReadUInt(8)
     roundStartTime = net.ReadUInt(18)
     roundDuration = net.ReadUInt(11)
+end)
+
+local winner = ""
+local winnerKills = 0
+
+net.Receive("RoundEnded", function()
+    inRound = false
+    winner = net.ReadString()
+    winnerKills = net.ReadUInt(8)
 end)
 
 function resetKillFeedText()
@@ -49,7 +61,11 @@ function HUD()
     
     if curRound > 0 then
         local remainingTime = (math.floor(roundStartTime) + roundDuration) - math.floor(CurTime())
-        RoundTimer.text = tostring(math.floor(remainingTime / 60)) .. ":" .. tostring(remainingTime % 60)
+        if remainingTime >= 10 then
+            RoundTimer.text = tostring(math.floor(remainingTime / 60)) .. ":" .. tostring(remainingTime % 60)
+        else
+            RoundTimer.text = tostring(math.floor(remainingTime / 60)) .. ":0" .. tostring(remainingTime % 60)
+        end
     end
 
     draw.RoundedBox(5, RoundTimer.x - RoundTimer.width/2, RoundTimer.y, RoundTimer.width, RoundTimer.height, Color(80, 80, 80, 120))
@@ -70,8 +86,16 @@ function HUD()
     end
 end
 
-hook.Add("HUDPaint", "KillCounter", HUD)
+hook.Add("HUDPaint", "Show HUD", HUD)
 
+function PostRoundHUD()
+    --  Winner
+    if !inRound then
+        draw.SimpleText("The winner is " .. winner .. " with " .. winnerKills .. " kill(s)!", "ScoreboardDefault", ScrW()/2, ScrH()/2-50, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+    end
+end
+
+hook.Add("HUDPaint", "Show PostRoundHUD", PostRoundHUD)
 
 /*
 function HealthMeter()
