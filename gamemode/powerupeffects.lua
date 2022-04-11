@@ -21,11 +21,14 @@ function pw_bombs(ply)
 end
 
 function pw_invincibility(ply)
-    StartSpawnProtection(ply, 2)
+    StartSpawnProtection(ply)
 end
 
 local effects = {
-    pw_bombs
+    pw_bombs,
+    pw_invincibility
 }
 
-hook.Add("OnPowerUp", "Add effect when powerup is picked up", effects[1])
+hook.Add("OnPowerUp", "Add effect when powerup is picked up", function(ply)
+    effects[math.random(1, #effects)](ply)
+end)
