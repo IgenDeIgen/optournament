@@ -47,7 +47,7 @@ function ROUNDSYS.RoundEnd()
             winner = v
         end
     end
-    print("Round #" .. tostring(ROUNDSYS.curRound) .. "started: " .. tostring(ROUNDSYS.roundActive))
+    print("Round #" .. tostring(ROUNDSYS.curRound) .. " started: " .. tostring(ROUNDSYS.roundActive))
     print("Winner is " .. winner:Nick())
     for k, v in ipairs(player.GetAll()) do
         v:KillSilent()

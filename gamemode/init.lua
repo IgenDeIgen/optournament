@@ -4,11 +4,13 @@ AddCSLuaFile( "shared.lua" )
 AddCSLuaFile( "hud.lua" )
 AddCSLuaFile( "roundsystem.lua" )
 AddCSLuaFile( "spawnprotection.lua" )
+AddCSLuaFile( "powerupeffects.lua" )
 --AddCSLuaFile( "scoreboard.lua" )
 
 include( "shared.lua" )
 include( "roundsystem.lua" )
 include( "spawnprotection.lua" )
+include( "powerupeffects.lua" )
 
 local killmessages = {
     "Double kill",
